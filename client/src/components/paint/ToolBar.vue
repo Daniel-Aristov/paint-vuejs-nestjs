@@ -3,22 +3,30 @@
     <div class="bar__left">
       <button
         type="button"
+        title="Карандаш"
         class="bar__btn brush"
         @click="setBrush"
       ></button>
       <button
         type="button"
+        title="Ластик"
         class="bar__btn eraser"
         @click="setEraser"
       ></button>
       <div class="line-color">
         <p>Цвет линии:</p>
-        <input type="color" @input="onColorChange" ref="colorInput" />
+        <input
+          type="color"
+          title="Изменить цвет линии"
+          @input="onColorChange"
+          ref="colorInput"
+        />
       </div>
       <div class="line-width">
         <p>Ширина линии:</p>
         <input
           type="number"
+          title="Изменить ширину линии"
           @input="onWidthLineChange"
           defaultValue="3"
           min="1"
@@ -28,9 +36,30 @@
       </div>
     </div>
     <div class="bar__right">
-<!--       <button type="button" class="bar__btn undo"></button>
-      <button type="button" class="bar__btn redo"></button> -->
-      <button type="button" class="bar__btn save" @click="saveImage"></button>
+      <button
+        type="button"
+        title="Действие назад"
+        class="bar__btn undo"
+        @click="undo"
+      ></button>
+      <button
+        type="button"
+        title="Действие вперед"
+        class="bar__btn redo"
+        @click="redo"
+      ></button>
+      <button
+        type="button"
+        title="Сохранить"
+        class="bar__btn save"
+        @click="saveImage"
+      ></button>
+      <button
+        type="button"
+        title="Очистить полотно"
+        class="bar__btn clear"
+        @click="clearCanvas"
+      ></button>
     </div>
   </div>
 </template>
@@ -40,10 +69,16 @@ import { defineComponent } from 'vue'
 import { useToolStore } from '../../store/toolsStore'
 import { useCanvasStore } from '../../store/canvasStore'
 import { mapStores } from 'pinia'
+import { io, Socket } from 'socket.io-client'
 import Brush from '../../ts/tools/Brush'
 import Eraser from '../../ts/tools/Eraser'
 
 export default defineComponent({
+  data() {
+    return {
+      socket: io('http://localhost:3000') as Socket,
+    }
+  },
   computed: {
     ...mapStores(useToolStore, useCanvasStore),
   },
@@ -59,7 +94,7 @@ export default defineComponent({
     setBrush() {
       const canvas = this.canvasStore.canvas
       if (canvas) {
-        this.toolStore.setTool(new Brush(canvas))
+        this.toolStore.setTool(new Brush(canvas, this.socket as Socket))
         this.onColorChange()
         this.onWidthLineChange()
       } else {
@@ -69,7 +104,7 @@ export default defineComponent({
     setEraser() {
       const canvas = this.canvasStore.canvas
       if (canvas) {
-        this.toolStore.setTool(new Eraser(canvas))
+        this.toolStore.setTool(new Eraser(canvas, this.socket as Socket))
       } else {
         console.error('Canvas модуль не инициализирован')
       }
@@ -84,7 +119,27 @@ export default defineComponent({
       } else {
         console.error('Canvas модуль не инициализирован')
       }
-    }
+    },
+    undo() {
+      this.canvasStore.undo()
+      this.socket.emit('undo')
+    },
+    redo() {
+      this.canvasStore.redo()
+      this.socket.emit('redo')
+    },
+    clearCanvas() {
+      const canvas = this.canvasStore.canvas
+      if (canvas) {
+        const ctx = canvas.getContext('2d')
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+          this.canvasStore.saveState()
+        }
+      } else {
+        console.error('Canvas модуль не инициализирован')
+      }
+    },
   },
 })
 </script>
@@ -157,6 +212,11 @@ export default defineComponent({
 
   .save {
     background: url('../../assets/images/save.png') no-repeat center center;
+  }
+
+  .clear {
+    background: url('../../assets/images/clear.png') no-repeat center center;
+    background-size: 25px;
   }
 }
 </style>

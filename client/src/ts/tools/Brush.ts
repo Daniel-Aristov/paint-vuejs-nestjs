@@ -1,11 +1,15 @@
-import Tool from "./Tool"
+import { useCanvasStore } from '../../store/canvasStore'
+import Tool from './Tool'
+import { Socket } from 'socket.io-client'
 
 export default class Brush extends Tool {
 	private painting: boolean
+	private socket: Socket
 
-	constructor(canvas: HTMLCanvasElement) {
+	constructor(canvas: HTMLCanvasElement, socket: Socket) {
 		super(canvas)
 		this.painting = false
+		this.socket = socket
 		this.listen()
 	}
 
@@ -23,6 +27,9 @@ export default class Brush extends Tool {
 	finishPainting(): void {
 		this.painting = false
 		if (this.ctx) this.ctx.beginPath()
+		const canvasStore = useCanvasStore()
+    canvasStore.saveState()
+		this.socket.emit('draw', this.canvas.toDataURL())
 	}
 
 	draw(e: MouseEvent): void {

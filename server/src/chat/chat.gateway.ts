@@ -1,5 +1,6 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { SocketService } from './../socket/socket.service'
+import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from '@nestjs/websockets'
+import { Server } from 'socket.io'
 
 @WebSocketGateway({
   cors: {
@@ -10,18 +11,16 @@ import { Server, Socket } from 'socket.io';
 })
 export class ChatGateway {
   @WebSocketServer()
-  server: Server;
+  server: Server
+
+  constructor(private readonly socketService: SocketService) {}
+
+  afterInit(server: Server) {
+    this.socketService.setServer(server)
+  }
 
   @SubscribeMessage('message')
   handleMessage(@MessageBody() message: string): void {
     this.server.emit('message', message);
-  }
-
-  handleConnection(client: Socket) {
-    console.log(`Client connected: ${client.id}`);
-  }
-
-  handleDisconnect(client: Socket) {
-    console.log(`Client disconnected: ${client.id}`);
   }
 }

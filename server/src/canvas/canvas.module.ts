@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
-import { ChatGateway } from './chat.gateway'
+import { CanvasGateway } from './canvas.gateway'
 import { SocketModule } from '../socket/socket.module'
 
 @Module({
   imports: [SocketModule],
-  providers: [ChatGateway],
+  providers: [CanvasGateway],
 })
-export class ChatModule {}
+export class CanvasModule {}

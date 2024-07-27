@@ -1,6 +1,6 @@
 <template>
   <div class="chat">
-    <div class="messages">
+    <div class="messages" ref="messages">
       <p class="messages__title">Ваши сообщения:</p>
       <ul>
         <li v-for="(message, index) in messages" :key="index" class="message">
@@ -44,8 +44,8 @@ export default defineComponent({
     this.socket = io('http://localhost:3000')
 
     this.socket.on('message', (message) => {
-      console.log(message)
       this.messages.push(message)
+      this.scrollToBottom()
     })
   },
   methods: {
@@ -56,10 +56,19 @@ export default defineComponent({
           username: this.username,
           text: this.message,
           date: new Date().toISOString(),
-        };
-        this.socket?.emit('message', message);
-        this.message = '';
+        }
+        this.socket?.emit('message', message)
+        this.message = ''
+        this.scrollToBottom()
       }
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const messagesContainer = this.$refs.messages as HTMLElement
+        if (messagesContainer) {
+          messagesContainer.scrollTop = messagesContainer.scrollHeight
+        }
+      })
     },
   },
 })
@@ -78,6 +87,7 @@ export default defineComponent({
   height: 430px;
   width: 400px;
   overflow-y: auto;
+  scrollbar-width: thin;
   overflow-x: hidden;
   border: 1px solid rgb(54, 54, 54);
   border-radius: 10px;
