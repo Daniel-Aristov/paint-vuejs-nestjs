@@ -1,16 +1,17 @@
 <template>
-  <MasterLayout>
-    <router-view></router-view>
-  </MasterLayout>
+	<div>
+		<NavigationBar/>
+		<slot/>
+	</div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import MasterLayout from '@/views/MasterLayout.vue'
+import NavigationBar from '@/components/NavigationBar.vue'
 
 export default defineComponent({
 	components: {
-		MasterLayout
+		NavigationBar
 	}
 })
 </script>

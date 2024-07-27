@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
+import Tool from '../ts/tools/Tool'
 
-interface ToolState {
-  tool: any
+
+type ToolState = {
+  tool: Tool | null
 }
 
 export const useToolStore = defineStore('tool', {
@@ -9,13 +11,8 @@ export const useToolStore = defineStore('tool', {
     tool: null,
   }),
   actions: {
-    setTool(tool: any) {
+    setTool(tool: Tool) {
       this.tool = tool;
-    },
-    setFillColor(color: string) {
-      if (this.tool) {
-        this.tool.fillColor = color
-      }
     },
     setStrokeColor(color: string) {
       if (this.tool) {

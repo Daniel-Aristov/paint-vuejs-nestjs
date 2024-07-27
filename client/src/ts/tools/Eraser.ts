@@ -1,11 +1,11 @@
 import Tool from "./Tool"
 
 export default class Brush extends Tool {
-	private painting: boolean
+	private erasing: boolean
 
 	constructor(canvas: HTMLCanvasElement) {
 		super(canvas)
-		this.painting = false
+		this.erasing = false
 		this.listen()
 	}
 
@@ -16,20 +16,23 @@ export default class Brush extends Tool {
 	}
 
 	startPainting(e: MouseEvent): void {
-		this.painting = true
+		this.erasing = true
 		this.draw(e)
 	}
 
 	finishPainting(): void {
-		this.painting = false
+		this.erasing = false
 		if (this.ctx) this.ctx.beginPath()
 	}
 
 	draw(e: MouseEvent): void {
-		if (!this.painting) return
+		if (!this.erasing) return
 
 		if (this.ctx) {
+			this.ctx.lineWidth = this.ctx.lineWidth || 10
       this.ctx.lineCap = "round"
+			this.ctx.strokeStyle = '#fff'
+
 			this.ctx.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
 			this.ctx.stroke()
 			this.ctx.beginPath()
