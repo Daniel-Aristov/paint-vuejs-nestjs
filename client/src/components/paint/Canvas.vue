@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useCanvasStore } from '../../store/canvasStore'
-import { useToolStore } from '../../store/toolsStore'
 import { mapStores } from 'pinia'
 import { io, Socket } from 'socket.io-client'
-import Brush from '../../ts/tools/Brush'
+import { useCanvasStore } from '@/store/canvasStore'
+import { useToolStore } from '@/store/toolsStore'
+import Brush from '@/ts/tools/Brush'
 
-export default defineComponent({
+export default defineComponent({ 
   data() {
     return {
       socket: null as Socket | null,

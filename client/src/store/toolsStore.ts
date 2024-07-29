@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import Tool from '../ts/tools/Tool'
+import Tool from '@/ts/tools/Tool'
 
 type ToolState = {
   tool: Tool | null

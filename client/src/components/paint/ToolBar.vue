@@ -65,13 +65,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useToolStore } from '../../store/toolsStore'
-import { useCanvasStore } from '../../store/canvasStore'
-import { mapStores } from 'pinia'
 import { io, Socket } from 'socket.io-client'
-import Brush from '../../ts/tools/Brush'
-import Eraser from '../../ts/tools/Eraser'
+import { defineComponent } from 'vue'
+import { useToolStore } from '@/store/toolsStore'
+import { useCanvasStore } from '@/store/canvasStore'
+import { mapStores } from 'pinia'
+import Brush from '@/ts/tools/Brush'
+import Eraser from '@/ts/tools/Eraser'
 
 export default defineComponent({
   data() {

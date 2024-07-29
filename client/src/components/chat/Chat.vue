@@ -26,8 +26,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { io, Socket } from 'socket.io-client'
-import { ChatMessage } from '../../types/chatMessage'
 import { v4 as uuidv4 } from 'uuid'
+import ChatMessage from '@/types/chatMessage'
 
 export default defineComponent({
   data() {
@@ -84,7 +84,7 @@ export default defineComponent({
 }
 
 .messages {
-  height: 430px;
+  height: 410px;
   width: 400px;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -127,6 +127,7 @@ export default defineComponent({
     padding: 6px;
     font-size: 15px;
     border-radius: 7px;
+    border: 1px solid black;
   }
 
   input {
@@ -136,16 +137,17 @@ export default defineComponent({
     font-size: 15px;
     border-radius: 7px;
     margin-bottom: 5px;
+    border: 1px solid black;
   }
 
   button {
-    background-color: aqua;
+    width: 100%;
+    background-color: rgb(86, 33, 118);
+    color: white;
     border: none;
-    border-radius: 7px;
-    padding: 5px 20px;
-    color: rgb(59, 59, 59);
-    margin-top: 5px;
+    border-radius: 30px;
     cursor: pointer;
+    padding: 8px;
   }
 }
 </style>

@@ -36,7 +36,4 @@ export default defineComponent({
 .canvas {
   background-color: $background-color;
 }
-
-.chat {
-}
 </style>

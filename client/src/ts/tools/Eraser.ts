@@ -1,6 +1,6 @@
-import Tool from "./Tool"
-import { useCanvasStore } from '../../store/canvasStore'
 import { Socket } from 'socket.io-client'
+import { useCanvasStore } from '@/store/canvasStore'
+import Tool from '@/ts/tools/Tool'
 
 export default class Brush extends Tool {
 	private erasing: boolean
