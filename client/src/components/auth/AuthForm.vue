@@ -1,7 +1,7 @@
 <template>
   <div class="h-[85vh] flex justify-center items-center">
     <form
-      class="w-[480px] h-[300px] border-2 border-purple-300 rounded-lg p-[20px]"
+      class="w-[480px] min-h-[300px] border-2 border-purple-300 rounded-lg p-[20px]"
       @submit.prevent="submitForm"
     >
       <p class="text-center text-xl font-medium">Приветствую!</p>
@@ -19,6 +19,20 @@
         class="flex flex-col justify-center items-center gap-[15px] mt-[30px]"
       >
         <input
+          v-if="!isLogin"
+          class="w-[100%] py-[7px] px-[18px] text-lg border-2 border-purple-300 rounded-3xl"
+          v-model="name"
+          type="text"
+          placeholder="Введите имя"
+        />
+        <input
+          v-if="!isLogin"
+          class="w-[100%] py-[7px] px-[18px] text-lg border-2 border-purple-300 rounded-3xl"
+          v-model="surname"
+          type="text"
+          placeholder="Введите фамилию"
+        />
+        <input
           class="w-[100%] py-[7px] px-[18px] text-lg border-2 border-purple-300 rounded-3xl"
           v-model="email"
           type="text"
@@ -31,11 +45,17 @@
           placeholder="Введите пароль"
         />
         <button class="w-[100%]" type="submit">
-          <div class="flex justify-center items-center gap-[5px] bg-purple-950 text-slate-100 border-none rounded-3xl cursor-pointer p-[8px]" v-if="isLoading">
+          <div
+            class="flex justify-center items-center gap-[5px] bg-purple-950 text-slate-100 border-none rounded-3xl cursor-pointer p-[8px]"
+            v-if="isLoading"
+          >
             <el-icon><Loading /></el-icon>
             <p>Загрузка...</p>
           </div>
-          <div class="flex justify-center items-center gap-[5px] bg-purple-950 text-slate-100 border-none rounded-3xl cursor-pointer p-[8px]" v-else>
+          <div
+            class="flex justify-center items-center gap-[5px] bg-purple-950 text-slate-100 border-none rounded-3xl cursor-pointer p-[8px]"
+            v-else
+          >
             <el-icon><UserFilled /></el-icon>
             <p>{{ submitButtonText }}</p>
           </div>
@@ -53,6 +73,8 @@ import { useAuthStore } from '@/store/authStore'
 export default defineComponent({
   data() {
     return {
+      name: '',
+      surname: '',
       email: '',
       password: '',
       isLogin: true,
@@ -86,7 +108,12 @@ export default defineComponent({
         this.isLoading = false
       } else {
         this.isLoading = true
-        await this.authStore.register(this.email, this.password)
+        await this.authStore.register(
+          this.name,
+          this.surname,
+          this.email,
+          this.password
+        )
         this.isLoading = false
       }
     },
