@@ -1,6 +1,7 @@
 <template>
-  <div class="canvas">
+  <div class="flex justify-center items-center">
     <canvas
+      class="bg-slate-100 mt-[30px] border-2 border-purple-950 rounded-lg"
       width="1100"
       height="500"
       ref="canvasRef"
@@ -72,20 +73,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped lang="scss">
-@import '@/styles/variables.scss';
-
-.canvas {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-canvas {
-  border: 1px solid rgb(51, 51, 51);
-  background-color: white;
-  border-radius: 10px;
-  margin-top: 50px;
-}
-</style>

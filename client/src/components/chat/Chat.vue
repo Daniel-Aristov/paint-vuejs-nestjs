@@ -1,22 +1,23 @@
 <template>
-  <div class="chat">
-    <div class="messages" ref="messages">
-      <p class="messages__title">Ваши сообщения:</p>
+  <div class="flex flex-col justify-start items-center my-[20px]">
+    <div class="w-[400px] h-[410px] overflow-y-auto overflow-x-hidden border-2 border-purple-950 rounded-lg" ref="messages">
+      <p class="p-[10px]">Ваши сообщения:</p>
       <ul>
-        <li v-for="(message, index) in messages" :key="index" class="message">
-          <p class="message__name">{{ message.username }}:</p>
-          <p class="message__text">{{ message.text }}</p>
+        <li v-for="(message, index) in messages" :key="index" class="text-slate-100 bg-purple-800 rounded-lg my-[6px] mx-[10px] p-[12px]">
+          <p class="font-medium mb-[3px]">{{ message.username }}:</p>
+          <p class="max-w-[300px] break-words">{{ message.text }}</p>
         </li>
       </ul>
     </div>
-    <form class="form">
-      <input type="text" v-model="username" placeholder="Введите ваше имя" />
+    <form class="w-[400px] mt-[15px]">
+      <input class="w-[100%] h-[30px] p-[6px] text-sm rounded-lg mb-[5px] border-2 border-purple-950" type="text" v-model="username" placeholder="Введите ваше имя" />
       <textarea
+      class="w-[100%] h-[100px] resize-none p-[6px] text-sm rounded-lg border-2 border-purple-950"
         v-model="message"
         @keyup.enter="sendMessage"
         placeholder="Введите сообщение..."
       ></textarea>
-      <button id="send" class="btn" @click.prevent="sendMessage">
+      <button id="send" class="w-[100%] bg-purple-950 text-slate-100 border-none rounded-3xl cursor-pointer p-[7px]" @click.prevent="sendMessage">
         Отправить
       </button>
     </form>
@@ -73,81 +74,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped lang="scss">
-.chat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 20px 0;
-}
-
-.messages {
-  height: 410px;
-  width: 400px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  overflow-x: hidden;
-  border: 1px solid rgb(54, 54, 54);
-  border-radius: 10px;
-
-  &__title {
-    padding: 10px;
-  }
-}
-
-.message {
-  background-color: rgb(81, 172, 105);
-  color: white;
-  border-radius: 10px;
-  margin: 6px 10px;
-  padding: 12px;
-
-  &__name {
-    font-weight: bold;
-    margin-bottom: 3px;
-  }
-
-  &__text {
-    max-width: 300px;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-}
-
-.form {
-  margin-top: 20px;
-  width: 400px;
-
-  textarea {
-    width: 100%;
-    height: 100px;
-    resize: none;
-    padding: 6px;
-    font-size: 15px;
-    border-radius: 7px;
-    border: 1px solid black;
-  }
-
-  input {
-    width: 100%;
-    height: 30px;
-    padding: 6px;
-    font-size: 15px;
-    border-radius: 7px;
-    margin-bottom: 5px;
-    border: 1px solid black;
-  }
-
-  button {
-    width: 100%;
-    background-color: rgb(86, 33, 118);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    padding: 8px;
-  }
-}
-</style>

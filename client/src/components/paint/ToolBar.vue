@@ -1,30 +1,34 @@
 <template>
-  <div class="bar">
-    <div class="bar__left">
-      <button
-        type="button"
-        title="Карандаш"
-        class="bar__btn brush"
+  <div
+    class="w-100 h-[50px] flex justify-between items-center bg-slate-100 py-[10px] border-b-2 border-purple-950"
+  >
+    <div class="flex items-center gap-[13px]">
+      <ButtonTool
+        :size="23"
+        :bgImgUrl="'src/assets/images/pencil.png'"
+        :title="'Карандаш'"
         @click="setBrush"
-      ></button>
-      <button
-        type="button"
-        title="Ластик"
-        class="bar__btn eraser"
+      />
+      <ButtonTool
+        :size="28"
+        :bgImgUrl="'src/assets/images/eraser.png'"
+        :title="'Ластик'"
         @click="setEraser"
-      ></button>
-      <div class="line-color">
-        <p>Цвет линии:</p>
+      />
+      <div class="flex items-center justify-center gap-[10px] ml-[30px]">
+        <p class="text-lg mb-[3px]">Цвет линии:</p>
         <input
+          class="w-[42px] text-sm p-[3px] cursor-pointer"
           type="color"
           title="Изменить цвет линии"
           @input="onColorChange"
           ref="colorInput"
         />
       </div>
-      <div class="line-width">
-        <p>Ширина линии:</p>
+      <div class="flex items-center justify-center gap-[10px] ml-[30px]">
+        <p class="text-lg mb-[3px]">Ширина линии:</p>
         <input
+          class="w-[42px] text-sm p-[3px] cursor-pointer"
           type="number"
           title="Изменить ширину линии"
           @input="onWidthLineChange"
@@ -35,31 +39,31 @@
         />
       </div>
     </div>
-    <div class="bar__right">
-      <button
-        type="button"
-        title="Действие назад"
-        class="bar__btn undo"
+    <div class="flex items-center gap-[13px]">
+      <ButtonTool
+        :size="25"
+        :bgImgUrl="'src/assets/images/undo.png'"
+        :title="'Действие назад'"
         @click="undo"
-      ></button>
-      <button
-        type="button"
-        title="Действие вперед"
-        class="bar__btn redo"
+      />
+      <ButtonTool
+        :size="25"
+        :bgImgUrl="'src/assets/images/redo.png'"
+        :title="'Действие вперед'"
         @click="redo"
-      ></button>
-      <button
-        type="button"
-        title="Сохранить"
-        class="bar__btn save"
+      />
+      <ButtonTool
+        :size="25"
+        :bgImgUrl="'src/assets/images/save.png'"
+        :title="'Сохранить'"
         @click="saveImage"
-      ></button>
-      <button
-        type="button"
-        title="Очистить полотно"
-        class="bar__btn clear"
+      />
+      <ButtonTool
+        :size="25"
+        :bgImgUrl="'src/assets/images/clear.png'"
+        :title="'Очистить полотно'"
         @click="clearCanvas"
-      ></button>
+      />
     </div>
   </div>
 </template>
@@ -72,12 +76,16 @@ import { useCanvasStore } from '@/store/canvasStore'
 import { mapStores } from 'pinia'
 import Brush from '@/ts/tools/Brush'
 import Eraser from '@/ts/tools/Eraser'
+import ButtonTool from '@/components/paint/ButtonTool.vue'
 
 export default defineComponent({
   data() {
     return {
       socket: io('http://localhost:3000') as Socket,
     }
+  },
+  components: {
+    ButtonTool,
   },
   computed: {
     ...mapStores(useToolStore, useCanvasStore),
@@ -143,80 +151,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss">
-@import '@/styles/variables.scss';
-
-.bar {
-  height: $bar-height;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border-bottom: 1px solid #791293;
-  padding: 0 10px;
-
-  &__left,
-  &__right {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-  }
-
-  &__btn {
-    height: 25px;
-    width: 25px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background-size: cover;
-  }
-
-  .brush {
-    background: url('../../assets/images/pencil.png') no-repeat center center;
-    background-size: 23px;
-  }
-
-  .eraser {
-    background: url('../../assets/images/eraser.png') no-repeat center center;
-    background-size: 28px;
-  }
-
-  .line-width,
-  .line-color {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 30px;
-
-    p {
-      font-size: 17px;
-      margin-bottom: 3px;
-    }
-
-    input {
-      width: 42px;
-      font-size: 14px;
-      padding: 3px;
-    }
-  }
-
-  .undo {
-    background: url('../../assets/images/undo.png') no-repeat center center;
-  }
-
-  .redo {
-    background: url('../../assets/images/redo.png') no-repeat center center;
-  }
-
-  .save {
-    background: url('../../assets/images/save.png') no-repeat center center;
-  }
-
-  .clear {
-    background: url('../../assets/images/clear.png') no-repeat center center;
-    background-size: 25px;
-  }
-}
-</style>

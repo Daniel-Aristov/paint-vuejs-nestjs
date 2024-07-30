@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    isAuth: false,
+    isAuth: true,
   }),
   actions: {
     async login(email: string, password: string) {

@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AuthForm: typeof import('./src/components/auth/AuthForm.vue')['default']
+    ButtonTool: typeof import('./src/components/paint/ButtonTool.vue')['default']
     Canvas: typeof import('./src/components/paint/Canvas.vue')['default']
     Chat: typeof import('./src/components/chat/Chat.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
