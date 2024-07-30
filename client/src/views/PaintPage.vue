@@ -1,11 +1,7 @@
 <template>
-  <div class="paint-wrapper">
-    <div class="canvas">
-      <PaintBlock/>
-    </div>
-    <div class="chat">
-      <Chat />
-    </div>
+  <div class="h-[85vh] flex justify-between items-start my-[5px] mx-[10px]">
+    <PaintBlock/>
+    <Chat />
   </div>
 </template>
 
@@ -21,19 +17,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped lang="scss">
-@import '@/styles/variables.scss';
-
-.paint-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  height: calc(100vh - 50px);
-  margin: 15px 10px;
-}
-
-.canvas {
-  background-color: $background-color;
-}
-</style>

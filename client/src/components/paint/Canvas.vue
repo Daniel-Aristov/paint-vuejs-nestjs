@@ -3,7 +3,7 @@
     <canvas
       class="bg-slate-100 mt-[30px] border-2 border-purple-950 rounded-lg"
       width="1100"
-      height="500"
+      height="550"
       ref="canvasRef"
     ></canvas>
   </div>
