@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-100 bg-purple-950 sticky top-0 left-0 flex justify-between items-center py-[10px] px-[20px] z-40"
+    class="w-100 bg-purple-950 sticky top-0 left-0 flex justify-between items-center py-[10px] px-[20px] z-40 border-b-2 border-slate-100"
   >
     <router-link class="flex justify-start items-center gap-[10px]" to="/">
       <img
@@ -8,7 +8,7 @@
         src="../assets/images/icon.png"
         alt="logo"
       />
-      <p class="text-slate-100 text-xl font-medium">AriPaint</p>
+      <p class="text-slate-100 text-xl font-medium">Sketch & Chat</p>
     </router-link>
     <nav class="flex justify-center items-center gap-[15px]">
       <router-link
@@ -41,7 +41,7 @@
       >
       <router-link
         v-else
-        to="/auth"
+        to="/"
         class="flex justify-center items-center py-[5px] px-[30px] border-2 rounded-lg bg-slate-100 text-purple-950 border-purple-950 hover:bg-purple-950 hover:text-slate-100 hover:border-slate-100 transition-all"
         @click="authStore.logout"
         >Выйти</router-link
