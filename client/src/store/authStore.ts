@@ -5,15 +5,35 @@ import { defineStore } from 'pinia'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isAuth: false,
+    user: {
+      id: null as number | null,
+      name: '',
+      email: '',
+    },
   }),
   actions: {
+    async getUser(id: number) {
+      try {
+        const response = await axios.get(`/auth/user/${id}`)
+        this.user = response.data
+        console.log(response.data)
+      } catch (error) {
+        console.error('Failed to fetch user:', error)
+      }
+    },
     async login(email: string, password: string) {
       try {
         const response = await axios.post('/auth/login', {
           email: email,
           password: password,
         })
+
+        const userData = response.data
         this.isAuth = true
+        this.user.id = userData.id
+        this.user.name = userData.name
+        this.user.email = userData.email
+
         console.log('Logged in successfully:', response.data)
         router.push('/paint')
       } catch (error) {
@@ -28,14 +48,23 @@ export const useAuthStore = defineStore('auth', {
           email: email,
           password: password,
         })
-        console.log('Registered successfully:', response.data)
+        const userData = response.data
+
+        console.log('Registered successfully:', userData)
         this.isAuth = true
+        this.user.id = userData.id
+        this.user.name = userData.name
+        this.user.email = userData.email
+
         router.push('/paint')
       } catch (error) {
         console.error('Registration failed:', error)
       }
     },
     logout() {
+      this.user.id = null
+      this.user.name = ''
+      this.user.email = ''
       this.isAuth = false
     },
   },

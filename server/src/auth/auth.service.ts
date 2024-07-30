@@ -7,6 +7,12 @@ import { LoginUserDto } from './dto/login-user.dto'
 export class AuthService {
   constructor(private readonly databaseService: DatabaseService) {}
 
+  async findUserById(id: number) {
+    return this.databaseService.user.findUnique({
+      where: { id },
+    });
+  }
+
   async validateUser(loginUserDto: LoginUserDto): Promise<any> {
     const { email, password } = loginUserDto;
     const user = await this.databaseService.user.findUnique({
