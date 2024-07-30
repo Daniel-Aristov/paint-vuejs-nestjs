@@ -12,6 +12,13 @@ export const useAuthStore = defineStore('auth', {
     },
   }),
   actions: {
+    loadUserFromStorage() {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        this.user = JSON.parse(storedUser)
+        this.isAuth = true
+      }
+    },
     async getUser(id: number) {
       try {
         const response = await axios.get(`/auth/user/${id}`)
@@ -34,7 +41,8 @@ export const useAuthStore = defineStore('auth', {
         this.user.name = userData.name
         this.user.email = userData.email
 
-        console.log('Logged in successfully:', response.data)
+        localStorage.setItem('user', JSON.stringify(this.user))
+
         router.push('/paint')
       } catch (error) {
         console.error('Login failed:', error)
@@ -50,11 +58,12 @@ export const useAuthStore = defineStore('auth', {
         })
         const userData = response.data
 
-        console.log('Registered successfully:', userData)
         this.isAuth = true
         this.user.id = userData.id
         this.user.name = userData.name
         this.user.email = userData.email
+
+        localStorage.setItem('user', JSON.stringify(this.user))
 
         router.push('/paint')
       } catch (error) {
@@ -66,6 +75,7 @@ export const useAuthStore = defineStore('auth', {
       this.user.name = ''
       this.user.email = ''
       this.isAuth = false
+      localStorage.removeItem('user')
     },
   },
 })
