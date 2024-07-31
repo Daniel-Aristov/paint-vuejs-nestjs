@@ -27,7 +27,7 @@
 import { defineComponent } from 'vue'
 import { io, Socket } from 'socket.io-client'
 import { v4 as uuidv4 } from 'uuid'
-import { useAuthStore } from '@/store/authStore'
+import { useUserStore } from '@/store/userStore'
 import { mapStores } from 'pinia'
 import ChatMessage from '@/types/chatMessage'
 
@@ -42,7 +42,7 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapStores(useAuthStore)
+    ...mapStores(useUserStore)
   },
   mounted() {
     this.socket = io('http://localhost:3000')
@@ -51,16 +51,13 @@ export default defineComponent({
       this.messages.push(message)
       this.scrollToBottom()
     })
-
-    const userId = this.authStore.user.id
-    if (userId) this.authStore.getUser(userId)
   },
   methods: {
     sendMessage() {
       if (this.message.trim() !== '') {
         const message = {
           id: uuidv4(),
-          username: this.authStore.user.name,
+          username: this.userStore.user.name,
           text: this.message,
           date: new Date().toISOString(),
         }

@@ -41,7 +41,7 @@
         <input
           class="w-[100%] py-[7px] px-[18px] text-lg border-2 border-purple-300 rounded-3xl"
           v-model="password"
-          type="text"
+          type="password"
           placeholder="Введите пароль"
         />
         <button class="w-[100%]" type="submit">
@@ -101,7 +101,6 @@ export default defineComponent({
       this.isLogin = !this.isLogin
     },
     async submitForm() {
-      console.log('Отправка формы произошла')
       if (this.isLogin) {
         this.isLoading = true
         await this.authStore.login(this.email, this.password)

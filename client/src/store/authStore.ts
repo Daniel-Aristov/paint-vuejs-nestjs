@@ -1,31 +1,25 @@
 import router from '@/router/route'
 import axios from '@/ts/utils/axios.config'
 import { defineStore } from 'pinia'
+import { useUserStore } from './userStore'
+import User from '@/types/user'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isAuth: false,
-    user: {
-      id: null as number | null,
-      name: '',
-      email: '',
-    },
   }),
   actions: {
+    clearAllStores() {
+      const userStore = useUserStore()
+      userStore.$reset()
+    },
     loadUserFromStorage() {
       const storedUser = localStorage.getItem('user')
       if (storedUser) {
-        this.user = JSON.parse(storedUser)
+        const parsedUser = JSON.parse(storedUser) as User
+        const userStore = useUserStore()
+        userStore.setUser(parsedUser)
         this.isAuth = true
-      }
-    },
-    async getUser(id: number) {
-      try {
-        const response = await axios.get(`/auth/user/${id}`)
-        this.user = response.data
-        console.log(response.data)
-      } catch (error) {
-        console.error('Failed to fetch user:', error)
       }
     },
     async login(email: string, password: string) {
@@ -36,12 +30,11 @@ export const useAuthStore = defineStore('auth', {
         })
 
         const userData = response.data
-        this.isAuth = true
-        this.user.id = userData.id
-        this.user.name = userData.name
-        this.user.email = userData.email
+        const userStore = useUserStore()
+        userStore.setUser(userData)
 
-        localStorage.setItem('user', JSON.stringify(this.user))
+        this.isAuth = true
+        localStorage.setItem('user', JSON.stringify(userStore.user))
 
         router.push('/paint')
       } catch (error) {
@@ -56,14 +49,13 @@ export const useAuthStore = defineStore('auth', {
           email: email,
           password: password,
         })
+
         const userData = response.data
+        const userStore = useUserStore()
+        userStore.setUser(userData)
 
         this.isAuth = true
-        this.user.id = userData.id
-        this.user.name = userData.name
-        this.user.email = userData.email
-
-        localStorage.setItem('user', JSON.stringify(this.user))
+        localStorage.setItem('user', JSON.stringify(userStore.user))
 
         router.push('/paint')
       } catch (error) {
@@ -71,11 +63,9 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
-      this.user.id = null
-      this.user.name = ''
-      this.user.email = ''
       this.isAuth = false
       localStorage.removeItem('user')
+      this.clearAllStores()
     },
   },
 })
